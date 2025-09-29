@@ -31,7 +31,7 @@ namespace NameSorter
                 }
 
                 fileService.WriteLines(outputFile, sortedNames);
-                Console.WriteLine($"\nSorted names written to {outputFile}");
+                Console.WriteLine($"\n Sorted names written to file {outputFile}");
             }
             catch (Exception ex)
             {

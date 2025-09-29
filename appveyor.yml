@@ -1,0 +1,30 @@
+version: 1.0.{build}
+
+# Use Windows image with Visual Studio / .NET SDK
+image: Visual Studio 2022
+
+# Install .NET 8 SDK if needed
+install:
+  - ps: Install-Product dotnet 8.0.100
+
+# Build steps
+build_script:
+  - cmd: dotnet restore
+  - cmd: dotnet build --configuration Release
+
+# Run unit tests
+test_script:
+  - cmd: dotnet test --no-build --verbosity normal
+
+# Run the console app to generate sorted names
+after_test:
+  - cmd: echo Running NameSorter console app...
+  - cmd: dotnet run --project NameSorter -- "unsorted-names-list.txt" > sorted-names-list.txt
+  - cmd: type sorted-names-list.txt
+
+# Upload artifacts (compiled binaries + sorted names)
+artifacts:
+  - path: '**/bin/Release/**'
+    name: BuildOutput
+  - path: 'sorted-names-list.txt'
+    name: SortedNames
